@@ -1,0 +1,47 @@
+name: Deploy to Server
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle # Gradle 설정
+        run: ./gradlew build
+
+      # Docker 이미지 빌드
+      - name: Docker build & Push
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/bucket-app:latest .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bucket-app:latest
+
+      # AWS 자격증명 부분 추가
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+#      - name: Deploy to Server
+#        uses: appleboy/ssh-action@v1
+#        with:
+#          host: ${{ secrets.SERVER_HOST }}
+#          username: inwoo
+#          key: ${{ secrets.SERVER_SSH_KEY }}
+#          script: |
+#            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+#            sudo docker rm -f $(docker ps -qa)
+#            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bucket-app:latest
+#            sudo docker-compose -f $COMPOSE up -d
+#  env:
+#    KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}

@@ -1,3 +1,12 @@
 spring:
   application:
-    name: bucketsearch
+    name: bucket-search
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST_NAME}:5432/${PSQL_DB}
+    username: ${DB_USER}
+    password: ${DB_PWD}
+
+springdoc:
+  swagger-ui:
+    with-credentials: true
