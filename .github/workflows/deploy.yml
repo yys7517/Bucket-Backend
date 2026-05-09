@@ -33,9 +33,14 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            cd /home/ubuntu/bucket-search
+            
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bucket-app:latest
-            sudo docker-compose -f $COMPOSE up -d
+            
+            sudo docker compose up -d
+            
+            sudo docker image prune -f
 #  env:
 #    KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
