@@ -1,12 +1,24 @@
 spring:
   application:
     name: bucket-search
+  config:
+    import: optional:file:.env[.properties]
 
   datasource:
     url: jdbc:postgresql://${DB_HOST_NAME}:5432/${PSQL_DB}
     username: ${DB_USER}
     password: ${DB_PWD}
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  forward-headers-strategy: native
+
 springdoc:
   swagger-ui:
     with-credentials: true
+    tags-sorter: alpha
+    operations-sorter: alpha
