@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.bucketsearch.dto.common.BaseResponse;
 import org.example.bucketsearch.dto.post.PostResponseDto;
 import org.example.bucketsearch.repository.PostRepository;
+import org.example.bucketsearch.service.home.HomeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final PostRepository postRepository;
+    private final HomeService homeService;
 
     @GetMapping("/popular")
     public ResponseEntity<BaseResponse<List<PostResponseDto>>> getPopularPosts() {
-        return ResponseEntity.ok(BaseResponse.success(postRepository.findPopularPosts().stream()
+        return ResponseEntity.ok(BaseResponse.success(
+                homeService.getPopularPosts().stream()
                 .map(PostResponseDto::from)
                 .toList()));
     }
@@ -30,7 +32,7 @@ public class HomeController {
     @GetMapping("/recent")
     public ResponseEntity<BaseResponse<List<PostResponseDto>>> getTopPosts() {
         return ResponseEntity.ok(BaseResponse.success(
-                postRepository.findTop3ByOrderByCreatedAtDesc().stream()
+                homeService.getRecentPosts().stream()
                         .map(PostResponseDto::from)
                         .toList()
         ));
