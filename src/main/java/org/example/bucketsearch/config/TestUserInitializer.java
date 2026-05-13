@@ -43,9 +43,9 @@ public class TestUserInitializer {
                 return;
             }
 
-            Category travel = categoryRepository.save(new Category(0, "여행", "#3B82F6"));
-            Category learning = categoryRepository.save(new Category(0, "학습", "#10B981"));
-            Category health = categoryRepository.save(new Category(0, "건강", "#F97316"));
+            Category travel = categoryRepository.save(new Category("여행", "#3B82F6"));
+            Category learning = categoryRepository.save(new Category("학습", "#10B981"));
+            Category health = categoryRepository.save(new Category("건강", "#F97316"));
 
             savePost(
                     "한라산 백록담 등반하기",
