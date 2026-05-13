@@ -1,12 +1,12 @@
 package org.example.bucketsearch.dto.post;
 
-import org.example.bucketsearch.domain.Post;
+import org.example.bucketsearch.domain.post.Post;
 import org.example.bucketsearch.dto.auth.AuthResponse;
 import org.example.bucketsearch.dto.plan.PlanSummaryResponse;
 
 import java.time.LocalDate;
 
-public record PostResponseDto(
+public record PostSummaryResponse(
         Long id,
         String category,
         String categoryColor,
@@ -17,9 +17,9 @@ public record PostResponseDto(
         AuthResponse userInfo,
         PlanSummaryResponse planSummary
 ) {
-    public static PostResponseDto from(Post post) {
+    public static PostSummaryResponse from(Post post) {
 
-        return new PostResponseDto(
+        return new PostSummaryResponse(
                 post.getId(),
                 post.getCategory().getName(),
                 post.getCategory().getColor(),

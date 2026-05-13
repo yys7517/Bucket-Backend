@@ -1,10 +1,14 @@
-package org.example.bucketsearch.domain;
+package org.example.bucketsearch.domain.post;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.bucketsearch.domain.Category;
+import org.example.bucketsearch.domain.PostLike;
+import org.example.bucketsearch.domain.PostPlan;
+import org.example.bucketsearch.domain.User;
 import org.example.bucketsearch.domain.common.BaseEntity;
 
 import java.time.LocalDate;

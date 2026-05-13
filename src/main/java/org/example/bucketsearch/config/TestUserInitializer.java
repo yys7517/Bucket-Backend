@@ -2,7 +2,7 @@ package org.example.bucketsearch.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.bucketsearch.domain.Category;
-import org.example.bucketsearch.domain.Post;
+import org.example.bucketsearch.domain.post.Post;
 import org.example.bucketsearch.domain.PostLike;
 import org.example.bucketsearch.domain.PostPlan;
 import org.example.bucketsearch.domain.User;

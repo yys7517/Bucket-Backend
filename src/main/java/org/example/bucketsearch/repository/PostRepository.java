@@ -1,6 +1,6 @@
 package org.example.bucketsearch.repository;
 
-import org.example.bucketsearch.domain.Post;
+import org.example.bucketsearch.domain.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

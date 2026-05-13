@@ -16,7 +16,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.bucketsearch.domain.common.BaseEntity;
+import org.example.bucketsearch.domain.post.Post;
 
 @Entity
 @Table(name = "post_likes",

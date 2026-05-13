@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.bucketsearch.domain.post.Post;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package org.example.bucketsearch.service.home;
 
 import lombok.RequiredArgsConstructor;
-import org.example.bucketsearch.domain.Post;
+import org.example.bucketsearch.domain.post.Post;
 import org.example.bucketsearch.repository.PostRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package org.example.bucketsearch.service.home;
 
-import org.example.bucketsearch.domain.Post;
+import org.example.bucketsearch.domain.post.Post;
 
 import java.util.List;
 

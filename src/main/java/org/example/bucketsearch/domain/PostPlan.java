@@ -2,6 +2,7 @@ package org.example.bucketsearch.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.bucketsearch.domain.post.Post;
 
 @Entity
 @Table(name = "plans")

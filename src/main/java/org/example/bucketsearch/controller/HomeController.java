@@ -3,8 +3,7 @@ package org.example.bucketsearch.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bucketsearch.dto.common.BaseResponse;
-import org.example.bucketsearch.dto.post.PostResponseDto;
-import org.example.bucketsearch.repository.PostRepository;
+import org.example.bucketsearch.dto.post.PostSummaryResponse;
 import org.example.bucketsearch.service.home.HomeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,18 +21,18 @@ public class HomeController {
     private final HomeService homeService;
 
     @GetMapping("/popular")
-    public ResponseEntity<BaseResponse<List<PostResponseDto>>> getPopularPosts() {
+    public ResponseEntity<BaseResponse<List<PostSummaryResponse>>> getPopularPosts() {
         return ResponseEntity.ok(BaseResponse.success(
                 homeService.getPopularPosts().stream()
-                .map(PostResponseDto::from)
+                .map(PostSummaryResponse::from)
                 .toList()));
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<BaseResponse<List<PostResponseDto>>> getTopPosts() {
+    public ResponseEntity<BaseResponse<List<PostSummaryResponse>>> getTopPosts() {
         return ResponseEntity.ok(BaseResponse.success(
                 homeService.getRecentPosts().stream()
-                        .map(PostResponseDto::from)
+                        .map(PostSummaryResponse::from)
                         .toList()
         ));
     }
