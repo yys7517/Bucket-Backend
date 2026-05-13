@@ -1,6 +1,6 @@
 package org.example.bucketsearch.dto.plan;
 
-import org.example.bucketsearch.domain.Post;
+import org.example.bucketsearch.domain.post.Post;
 import org.example.bucketsearch.domain.PostPlan;
 
 import java.util.List;
