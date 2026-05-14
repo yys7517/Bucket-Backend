@@ -1,4 +1,4 @@
-package org.example.bucketsearch.service;
+package org.example.bucketsearch.service.user;
 
 import org.example.bucketsearch.domain.User;
 

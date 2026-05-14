@@ -3,7 +3,7 @@ package org.example.bucketsearch.dto.post;
 import org.example.bucketsearch.domain.Category;
 import org.example.bucketsearch.domain.post.Post;
 import org.example.bucketsearch.domain.PostLike;
-import org.example.bucketsearch.dto.auth.AuthResponse;
+import org.example.bucketsearch.dto.user.UserInfoResponse;
 import org.example.bucketsearch.dto.plan.PlanDetailResponse;
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public record PostDetailResponse(
 //    boolean isLiked
 //    boolean isMine, // TOOD. 유저
     LocalDate startDate,
-    AuthResponse userInfo,
+    UserInfoResponse userInfo,
     List<PlanDetailResponse> plans
     // TODO. List<Comment> comments
 ) {
@@ -36,7 +36,7 @@ public record PostDetailResponse(
                 post.getMemo(),
                 likes.size(),
                 post.getStartDate(),
-                AuthResponse.from(post.getUser()),
+                UserInfoResponse.from(post.getUser()),
                 plans
         );
     }
