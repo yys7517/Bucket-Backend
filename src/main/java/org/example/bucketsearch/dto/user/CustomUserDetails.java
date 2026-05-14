@@ -1,0 +1,73 @@
+package org.example.bucketsearch.dto.user;
+
+import lombok.Getter;
+import org.example.bucketsearch.domain.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * SecurityFilterChain 이 이걸 써서 유저 정보, authorities, credentials 를 확인함.
+ */
+@Getter
+public class CustomUserDetails implements UserDetails {
+
+    private final String email;
+    private final Long userId;
+    private final String username;
+    private final String password;
+    private final String profileImageUrl;
+
+    public CustomUserDetails(User user) {
+        this.email = user.getEmail();
+        this.userId = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.profileImageUrl = user.getProfileImgUrl();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public String getNickname() { return username; }
+
+
+    /**
+     * UserDetails 가 interface 라, 인터페이스 에 있는 것들은 다 넣어야 한다.
+     * 자바 가 넣으라고 함. 프로젝트에 사용되지는 않는 변수들.
+     */
+    // admin/user role 구현하면 이 곅체로 저장됨
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+}
