@@ -17,6 +17,16 @@ spring:
 server:
   forward-headers-strategy: native
 
+kakao:
+  auth:
+    client: 4rmH2UjaWu5feAMRyeJxEWTSvU1srgY0
+    redirect: http://localhost:8080/auth/login/kakao
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-validity-ms: ${JWT_ACCESS_TOKEN_VALIDITY_MS:3600000}
+  refresh-token-validity-ms: ${JWT_REFRESH_TOKEN_VALIDITY_MS:1209600000}
+
 springdoc:
   swagger-ui:
     with-credentials: true

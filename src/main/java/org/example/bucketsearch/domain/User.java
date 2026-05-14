@@ -17,6 +17,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 소셜 로그인 식별자 (카카오 고유 ID) - 일반 가입 유저도 있을 수 있으니 null 허용
+    @Column(unique = true)
+    private Long kakaoId;
+
     private String email;
 
     private String username;
