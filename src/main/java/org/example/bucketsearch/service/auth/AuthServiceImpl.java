@@ -8,7 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.bucketsearch.domain.User;
 import org.example.bucketsearch.dto.auth.AuthResponse;
 import org.example.bucketsearch.dto.auth.KakaoUserInfoResponse;
+import org.example.bucketsearch.dto.auth.TokenRefreshResponse;
 import org.example.bucketsearch.repository.UserRepository;
+import org.example.bucketsearch.service.auth.token.JwtProvider;
+import org.example.bucketsearch.service.auth.token.TokenService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,7 +26,8 @@ import org.springframework.web.client.RestTemplate;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider; // 자체 JWT 발급 클래스 (가정)
+    private final JwtProvider jwtProvider; // 자체 JWT 발급 클래스
+    private final TokenService tokenService;
     private final RestTemplate restTemplate; // 외부 통신용
 
     @Override
@@ -38,9 +42,30 @@ public class AuthServiceImpl implements AuthService {
         // 3. 우리 서버 전용 JWT (Access / Refresh) 발급
         String accessToken = jwtProvider.createAccessToken(user.getId());
         String refreshToken = jwtProvider.createRefreshToken(user.getId());
+        tokenService.saveRefreshToken(user.getId(), refreshToken);
 
         // 4. 모바일로 보낼 최종 응답 반환
         return new AuthResponse(user.getId(), accessToken, refreshToken);
+    }
+
+    @Override
+    public TokenRefreshResponse refreshAccessToken(String refreshToken) {
+        if (!jwtProvider.validateToken(refreshToken)) {
+            throw new RuntimeException("유효하지 않은 refresh token입니다.");
+        }
+
+        Long userId = jwtProvider.getUserId(refreshToken);
+        if (!tokenService.matchesRefreshToken(userId, refreshToken)) {
+            throw new RuntimeException("저장된 refresh token과 일치하지 않습니다.");
+        }
+
+        String accessToken = jwtProvider.createAccessToken(userId);
+        return new TokenRefreshResponse(accessToken);
+    }
+
+    @Override
+    public void logout(Long userId) {
+        tokenService.deleteRefreshToken(userId);    // 로그아웃 시, 리프레시 토큰 제거
     }
 
     private KakaoUserInfoResponse getKakaoUserInfo(String accessToken) {
