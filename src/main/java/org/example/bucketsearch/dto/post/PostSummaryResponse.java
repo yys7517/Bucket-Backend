@@ -1,8 +1,8 @@
 package org.example.bucketsearch.dto.post;
 
 import org.example.bucketsearch.domain.post.Post;
-import org.example.bucketsearch.dto.user.UserInfoResponse;
 import org.example.bucketsearch.dto.plan.PlanSummaryResponse;
+import org.example.bucketsearch.dto.user.UserInfoResponse;
 
 import java.time.LocalDate;
 
@@ -12,7 +12,6 @@ public record PostSummaryResponse(
         String categoryColor,
         String title,
         int likeCount,
-//        boolean isLiked, TODO. USER 필요
         LocalDate startDate,
         UserInfoResponse userInfo,
         PlanSummaryResponse planSummary

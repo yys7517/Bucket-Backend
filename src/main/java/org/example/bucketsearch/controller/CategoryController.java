@@ -27,4 +27,6 @@ public class CategoryController {
                 .map(CategoryPostsResponse::from)
                 .toList()));
     }
+
+    // TODO. 카테고리 신규 등록
 }

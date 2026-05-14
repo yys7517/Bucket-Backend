@@ -2,10 +2,10 @@ package org.example.bucketsearch.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.bucketsearch.domain.Category;
-import org.example.bucketsearch.domain.post.Post;
 import org.example.bucketsearch.domain.PostLike;
 import org.example.bucketsearch.domain.PostPlan;
 import org.example.bucketsearch.domain.User;
+import org.example.bucketsearch.domain.post.Post;
 import org.example.bucketsearch.repository.CategoryRepository;
 import org.example.bucketsearch.repository.PostRepository;
 import org.example.bucketsearch.repository.UserRepository;
@@ -22,6 +22,8 @@ import java.util.List;
 public class TestUserInitializer {
 
     private static final String TEST_USER_EMAIL = "test@example.com";
+    private static final Long KAKAO_TEST_USER_ID = 4893725464L;
+    private static final String KAKAO_TEST_USER_EMAIL = "yys7517@kakao.com";
 
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -39,13 +41,19 @@ public class TestUserInitializer {
                             .profileImgUrl("https://example.com/test-user.png")
                             .build()));
 
-            if (postRepository.count() > 0) {
-                return;
-            }
+            User kakaoTestUser = userRepository.findByKakaoId(KAKAO_TEST_USER_ID)
+                    .or(() -> userRepository.findByEmail(KAKAO_TEST_USER_EMAIL))
+                    .orElseGet(() -> userRepository.save(User.builder()
+                            .kakaoId(KAKAO_TEST_USER_ID)
+                            .email(KAKAO_TEST_USER_EMAIL)
+                            .username("윤영선")
+                            .profileImgUrl("http://k.kakaocdn.net/dn/buvx76/dJMcahjTIYA/YC0auDQSaszhLqsMVPhSc0/img_640x640.jpg")
+                            .build()));
 
-            Category travel = categoryRepository.save(new Category("여행", "#3B82F6"));
-            Category learning = categoryRepository.save(new Category("학습", "#10B981"));
-            Category health = categoryRepository.save(new Category("건강", "#F97316"));
+            Category travel = findOrCreateCategory("여행", "#3B82F6");
+            Category learning = findOrCreateCategory("학습", "#10B981");
+            Category health = findOrCreateCategory("건강", "#F97316");
+            Category hobby = findOrCreateCategory("취미", "#A855F7");
 
             savePost(
                     "한라산 백록담 등반하기",
@@ -87,7 +95,42 @@ public class TestUserInitializer {
                     1,
                     false
             );
+            savePost(
+                    "서울 야경 사진 스팟 정복하기",
+                    "남산, 응봉산, 반포대교를 돌면서 야경 사진 포트폴리오 만들기",
+                    hobby,
+                    kakaoTestUser,
+                    LocalDate.now().plusDays(5),
+                    List.of("카메라 배터리 충전하기", "촬영 위치 저장하기", "보정 프리셋 만들기"),
+                    1,
+                    false
+            );
+            savePost(
+                    "제주도 해안도로 자전거 여행",
+                    "2박 3일 일정으로 제주 해안도로를 따라 라이딩하기",
+                    travel,
+                    kakaoTestUser,
+                    LocalDate.now().plusDays(14),
+                    List.of("자전거 대여 예약하기", "숙소 2곳 예약하기", "비상용품 챙기기", "코스 GPX 저장하기"),
+                    2,
+                    true
+            );
+            savePost(
+                    "Redis Refresh Token 흐름 정리하기",
+                    "로그인, 재발급, 로그아웃 플로우를 문서로 정리하고 API 테스트하기",
+                    learning,
+                    kakaoTestUser,
+                    LocalDate.now().plusDays(2),
+                    List.of("Redis 저장 키 확인하기", "refresh API 테스트하기", "logout 후 재발급 실패 확인하기"),
+                    2,
+                    true
+            );
         });
+    }
+
+    private Category findOrCreateCategory(String name, String color) {
+        return categoryRepository.findByName(name)
+                .orElseGet(() -> categoryRepository.save(new Category(name, color)));
     }
 
     private void savePost(
@@ -100,6 +143,10 @@ public class TestUserInitializer {
             int completedPlanCount,
             boolean liked
     ) {
+        if (postRepository.existsByTitleAndUserId(title, user.getId())) {
+            return;
+        }
+
         Post post = Post.builder()
                 .title(title)
                 .memo(memo)
