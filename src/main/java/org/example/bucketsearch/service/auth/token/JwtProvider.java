@@ -1,9 +1,10 @@
-package org.example.bucketsearch.service.auth;
+package org.example.bucketsearch.service.auth.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class JwtProvider {
 
     private final SecretKey secretKey;
     private final long accessTokenValidityMs;
+    @Getter
     private final long refreshTokenValidityMs;
 
     public JwtProvider(
@@ -40,7 +42,7 @@ public class JwtProvider {
     }
 
     public Long getUserId(String token) {
-        return parseClaims(token).get(USER_ID_CLAIM, Long.class);
+        return Long.parseLong(parseClaims(token).getSubject());
     }
 
     public boolean validateToken(String token) {
