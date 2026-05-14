@@ -79,9 +79,14 @@ public class AuthServiceImpl implements AuthService {
     // --- [보조 로직] 신규 유저 DB 저장 ---
     private User registerNewUser(KakaoUserInfoResponse response) {
         Long kakaoId = response.id();
-        String nickname = response.kakao_account().profile().nickname();
-        String email = response.kakao_account().email(); // 카카오 설정에서 '이메일' 동의가 되어 있어야 함
-        String profileImg = response.kakao_account().profile().profile_image_url();
+        KakaoUserInfoResponse.KakaoAccount account = response.kakao_account();
+        KakaoUserInfoResponse.Profile profile = account == null ? null : account.profile();
+
+        String nickname = profile == null || profile.nickname() == null
+                ? "kakao-user-" + kakaoId
+                : profile.nickname();
+        String email = account == null ? null : account.email();
+        String profileImg = profile == null ? null : profile.profile_image_url();
 
 //       2. 로그로 확인해보기 (개발 단계에서 매우 유용!)
         log.info("새로운 유저 등록: 카카오 ID = {}, 닉네임={}, 이메일={}, 프로필={}",kakaoId, nickname, email, profileImg);
