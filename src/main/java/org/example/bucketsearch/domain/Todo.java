@@ -2,25 +2,29 @@ package org.example.bucketsearch.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.bucketsearch.domain.post.Post;
 
 @Entity
-@Table(name = "plans")
-@Getter @Setter
+@Table(name = "todos",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"small_goal_id", "sort_order"}))
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostPlan {
+public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    @JoinColumn(name = "small_goal_id", nullable = false)
+    private SmallGoal smallGoal;
 
     private int sortOrder;
 
+    private String color;
+
+    @Column(nullable = false)
     private String content;
 
     private boolean isCompleted;

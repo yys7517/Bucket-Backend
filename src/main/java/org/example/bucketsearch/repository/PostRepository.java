@@ -17,5 +17,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findTop3ByOrderByCreatedAtDesc();
 
-    boolean existsByTitleAndUserId(String title, Long userId);
+    boolean existsByGoalAndUserId(String goal, Long userId);
 }

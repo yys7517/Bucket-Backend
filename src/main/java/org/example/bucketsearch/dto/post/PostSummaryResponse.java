@@ -10,11 +10,11 @@ public record PostSummaryResponse(
         Long id,
         String category,
         String categoryColor,
-        String title,
+        String goal,
         int likeCount,
         LocalDate startDate,
         UserInfoResponse userInfo,
-        PlanSummaryResponse planSummary
+        PlanSummaryResponse smallGoalSummary
 ) {
     public static PostSummaryResponse from(Post post) {
 
@@ -22,7 +22,7 @@ public record PostSummaryResponse(
                 post.getId(),
                 post.getCategory().getName(),
                 post.getCategory().getColor(),
-                post.getTitle(),
+                post.getGoal(),
                 post.getLikes().size(),
                 post.getStartDate(),
                 UserInfoResponse.from(post.getUser()),

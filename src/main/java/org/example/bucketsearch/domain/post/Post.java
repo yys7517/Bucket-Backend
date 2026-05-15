@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.bucketsearch.domain.Category;
 import org.example.bucketsearch.domain.PostLike;
-import org.example.bucketsearch.domain.PostPlan;
+import org.example.bucketsearch.domain.SmallGoal;
 import org.example.bucketsearch.domain.User;
 import org.example.bucketsearch.domain.common.BaseEntity;
 
@@ -22,11 +22,14 @@ import java.util.List;
 @Getter
 @Builder
 public class Post extends BaseEntity {
+    public static final int MAX_SMALL_GOAL_COUNT = 8;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    @Column(nullable = false)
+    private String goal;    // 큰 목표
 
     private String memo;
 
@@ -44,7 +47,15 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<PostPlan> plans = new ArrayList<>();
+    private List<SmallGoal> smallGoals = new ArrayList<>();
 
     private LocalDate startDate;
+
+    public void addSmallGoal(SmallGoal smallGoal) {
+        if (smallGoals.size() >= MAX_SMALL_GOAL_COUNT) {
+            throw new IllegalStateException("작은 목표는 최대 8개까지 등록할 수 있습니다.");
+        }
+        smallGoals.add(smallGoal);
+        smallGoal.setPost(this);
+    }
 }
